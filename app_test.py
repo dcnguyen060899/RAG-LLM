@@ -21,7 +21,6 @@ from pathlib import Path
 import pypdf
 import time
 import os
-from google.cloud import storage
 
 # Define variable to hold llama2 weights namingfiner
 name = "gpt2"
@@ -96,33 +95,19 @@ def upload_to_gcs(uploaded_file):
         blob = bucket.blob(uploaded_file.name)
         blob.upload_from_string(uploaded_file.getvalue())
         st.success(f"File {uploaded_file.name} uploaded to {bucket_name}.")
+# Define a directory for storing uploaded files
 
-# Streamlit UI
-uploaded_file = st.file_uploader("Choose a file")
-if st.button('Upload to GCS'):
-    upload_to_gcs(uploaded_file)
+st.title('PDF Upload and Query Interface')
 
-def read_files_from_gcs(bucket_name):
-    client = storage.Client()
-    bucket = client.bucket(bucket_name)
-    files_data = []
+# File uploader allows user to add PDF
+uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+upload_button = st.button('Upload')
 
-    # List files in the specified bucket
-    blobs = client.list_blobs(bucket_name)
+if uploaded_file and upload_button:
+    st.success("File uploaded successfully.")
 
-    for blob in blobs:
-        # Read the file's content
-        file_data = blob.download_as_bytes()
-        files_data.append(file_data)
-
-    return files_data
-
-bucket_name = "your_bucket_name"
-files_data = read_files_from_gcs(bucket_name)
-
-documents = SimpleDirectoryReader(files_data).load_data()
+documents = SimpleDirectoryReader(uploaded_file).load_data()
 index = VectorStoreIndex.from_documents(documents)
-
 
 # Setup index query engine using LLM
 query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
