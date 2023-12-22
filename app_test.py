@@ -86,8 +86,6 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define variable to store uploaded files
-st.title('PDF Upload and Query Interface')
-
 # File uploader allows user to add PDF
 with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     st.title('PDF Upload and Query Interface')
