@@ -21,6 +21,7 @@ from pathlib import Path
 import pypdf
 import time
 import os
+from google.cloud import storage
 
 # Define variable to hold llama2 weights namingfiner
 name = "gpt2"
@@ -84,26 +85,42 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
-# Define a directory for storing uploaded files
-UPLOAD_DIRECTORY = "/content/"
+# Initialize a GCS client
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'home/user/ihduynguyen/download/ragllm-408909-54ffd8b25df8.json'
+client = storage.Client()
+bucket_name = 'ragllm'
+bucket = client.bucket(bucket_name)
 
-if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(UPLOAD_DIRECTORY)
+def upload_to_gcs(uploaded_file):
+    if uploaded_file is not None:
+        blob = bucket.blob(uploaded_file.name)
+        blob.upload_from_string(uploaded_file.getvalue())
+        st.success(f"File {uploaded_file.name} uploaded to {bucket_name}.")
 
-st.title('PDF Upload and Query Interface')
+# Streamlit UI
+uploaded_file = st.file_uploader("Choose a file")
+if st.button('Upload to GCS'):
+    upload_to_gcs(uploaded_file)
 
-# File uploader allows user to add PDF
-uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-upload_button = st.button('Upload')
+def read_files_from_gcs(bucket_name):
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    files_data = []
 
-if uploaded_file and upload_button:
-  for file in uploaded_file:
-  # Save the uploaded PDF to the directory
-    with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-      f.write(file.getbuffer())
-    st.success("File uploaded successfully.")
+    # List files in the specified bucket
+    blobs = client.list_blobs(bucket_name)
 
-documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
+    for blob in blobs:
+        # Read the file's content
+        file_data = blob.download_as_bytes()
+        files_data.append(file_data)
+
+    return files_data
+
+bucket_name = "your_bucket_name"
+files_data = read_files_from_gcs(bucket_name)
+
+documents = SimpleDirectoryReader(files_data).load_data()
 index = VectorStoreIndex.from_documents(documents)
 
 
