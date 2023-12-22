@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "meta-llama/Llama-2-7b-chat-hf"
+name = "meta-llama/Llama-2-7b"
 # Set auth token variable from hugging face
 auth_token = "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"
 
@@ -34,17 +34,9 @@ def get_tokenizer_model():
     tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, use_auth_token=auth_token, 
-                                                torch_dtype=torch.float16,
-                                                rope_scaling={"type": "dynamic", "factor": 2})
-    # Convert to quantized model for CPU
-    model.to('cpu')
-    model.eval()
-    model_quantized = torch.quantization.quantize_dynamic(
-        model, {torch.nn.Linear}, dtype=torch.qint8
-    )
+    model = AutoModelForCausalLM.from_pretrained(name, use_auth_token=auth_token)
     
-    return model_quantized, tokenizer
+    return model, tokenizer
 
 model, tokenizer = get_tokenizer_model()
 
