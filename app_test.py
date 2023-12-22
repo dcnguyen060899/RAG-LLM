@@ -88,45 +88,46 @@ set_global_service_context(service_context)
 st.title('PDF Upload and Query Interface')
 
 # File uploader allows user to add PDF
-uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-upload_button = st.button('Upload')
+with tempfile.TemporaryDirectory() as upload_dir:
+    uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 
-if uploaded_file and upload_button:
-    for file in uploaded_file:
-    # Save the uploaded PDF to the directory
-    with open(os.path.join(uploaded_file, file.name), "wb") as f:
-        f.write(file.getbuffer())
-    st.success("File uploaded successfully.")
+    if uploaded_files:
+        for uploaded_file in uploaded_files:
+            file_path = os.path.join(upload_dir, uploaded_file.name)
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
 
-documents = SimpleDirectoryReader(uploaded_file).load_data()
-index = VectorStoreIndex.from_documents(documents)
-
-# Setup index query engine using LLM
-query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
-
-# Create centered main title
-st.title('👔 HireMind 🧩')
-
-# setup a session to hold all the old prompt
-if 'messages' not in st.session_state:
-  st.session_state.messages = []
-
-# print out the history message
-for message in st.session_state.messages:
-  st.chat_message(message['role']).markdown(message['content'])
-
-
-# Create a text input box for the user
-# If the user hits enter
-prompt = st.chat_input('Input your prompt here')
-
-if prompt:
-  st.chat_message('user').markdown(prompt)
-  st.session_state.messages.append({'role': 'user', 'content': prompt})
-
-  response = query_engine.query(prompt)
-
-  st.chat_message('assistant').markdown(response)
-  st.session_state.messages.append(
-      {'role': 'assistant', 'content': response}
-  )
+        # Now you can use SimpleDirectoryReader on the upload_dir
+        documents = SimpleDirectoryReader(upload_dir).load_data()
+    
+    index = VectorStoreIndex.from_documents(documents)
+    
+    # Setup index query engine using LLM
+    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+    
+    # Create centered main title
+    st.title('👔 HireMind 🧩')
+    
+    # setup a session to hold all the old prompt
+    if 'messages' not in st.session_state:
+      st.session_state.messages = []
+    
+    # print out the history message
+    for message in st.session_state.messages:
+      st.chat_message(message['role']).markdown(message['content'])
+    
+    
+    # Create a text input box for the user
+    # If the user hits enter
+    prompt = st.chat_input('Input your prompt here')
+    
+    if prompt:
+      st.chat_message('user').markdown(prompt)
+      st.session_state.messages.append({'role': 'user', 'content': prompt})
+    
+      response = query_engine.query(prompt)
+    
+      st.chat_message('assistant').markdown(response)
+      st.session_state.messages.append(
+          {'role': 'assistant', 'content': response}
+      )
