@@ -15,4 +15,3 @@ streamlit
 transformers
 tempfile
 boto3
-streamlit
