@@ -86,6 +86,7 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define a directory for storing uploaded files
+# Using the temporary directory
 with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     st.title('PDF Upload and Query Interface')
 
@@ -98,7 +99,7 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
                 f.write(file.getbuffer())
             st.success("File uploaded successfully.")
 
-        # Assuming your document processing and index building happen here:
+        # Assuming your document processing and index building happen here
         documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
         index = VectorStoreIndex.from_documents(documents)
 
