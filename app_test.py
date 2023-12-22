@@ -1,5 +1,3 @@
-!pip install google-cloud-storage
-
 import streamlit as st
 
 # Import transformer classes for generaiton
