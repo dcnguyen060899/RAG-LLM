@@ -27,17 +27,16 @@ name = "gpt2"
 # Set auth token variable from hugging face
 auth_token = "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"
 
-@st.cache_resource
+@st.cache(allow_output_mutation=True)
 def get_tokenizer_model():
     # Create tokenizer
     tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name,
-                            use_auth_token=auth_token, torch_dtype=torch.float16,
-                            rope_scaling={"type": "dynamic", "factor": 2}, load_in_8bit=True)
+    model = AutoModelForCausalLM.from_pretrained(name)
 
     return model, tokenizer
+
 model, tokenizer = get_tokenizer_model()
 
 # Initialize the SimpleInputPrompt with an empty template
