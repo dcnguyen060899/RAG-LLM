@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 # Import transformer classes for generaiton
@@ -31,11 +30,11 @@ auth_token = "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"
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, cache_dir='/content/drive/My Drive/LLM Deployment/LLM Deployment/', use_auth_token=auth_token)
+    tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, cache_dir='/content/drive/My Drive/LLM Deployment/LLM Deployment/'
-                            , use_auth_token=auth_token, torch_dtype=torch.float16,
+    model = AutoModelForCausalLM.from_pretrained(name,
+                            use_auth_token=auth_token, torch_dtype=torch.float16,
                             rope_scaling={"type": "dynamic", "factor": 2}, load_in_8bit=True)
 
     return model, tokenizer
