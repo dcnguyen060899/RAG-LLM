@@ -85,9 +85,10 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
+UPLOAD_DIRECTORY = None
 # Define a directory for storing uploaded files
-# Create a temporary directory for file uploads
-UPLOAD_DIRECTORY = tempfile.mkdtemp()
+with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+    UPLOAD_DIRECTORY = UPLOAD_DIRECTORY
 
 st.title('PDF Upload and Query Interface')
 
@@ -95,33 +96,15 @@ st.title('PDF Upload and Query Interface')
 uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 upload_button = st.button('Upload')
 
-index = None
+if uploaded_file and upload_button:
+  for file in uploaded_file:
+  # Save the uploaded PDF to the directory
+    with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+      f.write(file.getbuffer())
+    st.success("File uploaded successfully.")
 
-if upload_button:
-    if uploaded_file:
-        for file in uploaded_file:
-            # Save the uploaded PDF to the directory
-            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-                f.write(file.getbuffer())
-            st.success(f"File {file.name} uploaded successfully.")
-
-        # Read documents only after files are uploaded
-        documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-        index = VectorStoreIndex.from_documents(documents)
-    else:
-        st.warning("Please upload a file.")
-
-
-# Create a simple index for debugging
-documents = [{'id': 1, 'content': 'Sample document'}]
+documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
 index = VectorStoreIndex.from_documents(documents)
-
-if hasattr(index, 'as_query_engine'):
-    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
-    st.write("Query engine created successfully.")
-else:
-    st.error("Method as_query_engine not found in VectorStoreIndex.")
-    
 # Setup index query engine using LLM
 query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
