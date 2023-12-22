@@ -109,7 +109,9 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     
     # Setup index query engine using LLM
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
-    
+    test_response = query_engine.query("test query")
+    print(test_response)  # Check if this returns a valid response
+
     # Create centered main title
     st.title('👔 HireMind 🧩')
     
@@ -127,19 +129,13 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     prompt = st.chat_input('Input your prompt here')
     
     if prompt:
-        st.chat_message('user').markdown(prompt)
-        st.session_state.messages.append({'role': 'user', 'content': prompt})
+      st.chat_message('user').markdown(prompt)
+      st.session_state.messages.append({'role': 'user', 'content': prompt})
     
-        # Debug: Print prompt to console
-        print("Prompt:", prompt)
+      response = query_engine.query(prompt)
     
-        response = query_engine.query(prompt)
-    
-        # Debug: Print response to console
-        print("Response:", response)
-    
-        st.chat_message('assistant').markdown(response)
-        st.session_state.messages.append(
-            {'role': 'assistant', 'content': response}
-        )
+      st.chat_message('assistant').markdown(response)
+      st.session_state.messages.append(
+          {'role': 'assistant', 'content': response}
+      )
 
