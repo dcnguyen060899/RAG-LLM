@@ -110,17 +110,10 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     # Setup index query engine using LLM
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
     
-    prompt = st.chat_input('Input your prompt here')
-
-    if prompt:
-        st.write(f"Received prompt: {prompt}")  # Display the received prompt
-
-    response = query_engine.query(prompt)
-
-    if response:
-        st.write(f"Generated response: {response}")  # Display the response
-    else:
-        st.write("No response generated.")  # Indicate no response
+    try:
+        response = query_engine.query(prompt)
+    except Exception as e:
+        st.write(f"Error during query: {e}")
 
 
     # # Create centered main title
