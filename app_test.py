@@ -109,39 +109,31 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     
     # Setup index query engine using LLM
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+
+    # Create centered main title
+    st.title('👔 HireMind 🧩')
     
+    # setup a session to hold all the old prompt
+    if 'messages' not in st.session_state:
+      st.session_state.messages = []
+    
+    # print out the history message
+    for message in st.session_state.messages:
+      st.chat_message(message['role']).markdown(message['content'])
+    
+    
+    # Create a text input box for the user
+    # If the user hits enter
     prompt = st.chat_input('Input your prompt here')
-
-    try:
-        response = query_engine.query(prompt)
-    except Exception as e:
-        st.write(f"Error during query: {e}")
-
-
-    # # Create centered main title
-    # st.title('👔 HireMind 🧩')
     
-    # # setup a session to hold all the old prompt
-    # if 'messages' not in st.session_state:
-    #   st.session_state.messages = []
+    if prompt:
+      st.chat_message('user').markdown(prompt)
+      st.session_state.messages.append({'role': 'user', 'content': prompt})
     
-    # # print out the history message
-    # for message in st.session_state.messages:
-    #   st.chat_message(message['role']).markdown(message['content'])
+      response = query_engine.query(prompt)
     
-    
-    # # Create a text input box for the user
-    # # If the user hits enter
-    # prompt = st.chat_input('Input your prompt here')
-    
-    # if prompt:
-    #   st.chat_message('user').markdown(prompt)
-    #   st.session_state.messages.append({'role': 'user', 'content': prompt})
-    
-    #   response = query_engine.query(prompt)
-    
-    #   st.chat_message('assistant').markdown(response)
-    #   st.session_state.messages.append(
-    #       {'role': 'assistant', 'content': response}
-    #   )
+      st.chat_message('assistant').markdown(response)
+      st.session_state.messages.append(
+          {'role': 'assistant', 'content': response}
+      )
 
