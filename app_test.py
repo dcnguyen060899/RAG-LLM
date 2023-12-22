@@ -112,6 +112,16 @@ if upload_button:
         st.warning("Please upload a file.")
 
 
+# Create a simple index for debugging
+documents = [{'id': 1, 'content': 'Sample document'}]
+index = VectorStoreIndex.from_documents(documents)
+
+if hasattr(index, 'as_query_engine'):
+    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+    st.write("Query engine created successfully.")
+else:
+    st.error("Method as_query_engine not found in VectorStoreIndex.")
+    
 # Setup index query engine using LLM
 query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
