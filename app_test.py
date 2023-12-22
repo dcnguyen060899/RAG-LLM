@@ -23,7 +23,7 @@ import time
 import os
 
 # Define variable to hold llama2 weights namingfiner
-name = "meta-llama/Llama-2-7b-chat-hf"
+name = "gpt2"
 # Set auth token variable from hugging face
 auth_token = "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"
 
