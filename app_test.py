@@ -93,6 +93,8 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
     upload_button = st.button('Upload')
 
+    query_engine = None
+    
     if uploaded_file and upload_button:
         for file in uploaded_file:
             with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
@@ -105,7 +107,7 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
 
         # Set up index query engine using LLM
         query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
-
+    
         # Create centered main title
     st.title('👔 HireMind 🧩')
     
