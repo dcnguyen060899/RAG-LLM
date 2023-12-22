@@ -103,9 +103,6 @@ if uploaded_file and upload_button:
             f.write(file.getbuffer())
         st.success("File uploaded successfully.")
 
-documents = None
-index = None
-
 if upload_button:
     documents = SimpleDirectoryReader(st.session_state.upload_directory).load_data()
     index = VectorStoreIndex.from_documents(documents)
