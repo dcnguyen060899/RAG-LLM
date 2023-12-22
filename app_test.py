@@ -1,4 +1,4 @@
-pip install google-cloud-storage
+!pip install google-cloud-storage
 
 import streamlit as st
 
