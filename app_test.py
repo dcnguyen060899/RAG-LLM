@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "meta-llama/Llama-2-7b-hf"
+name = "TheBloke/Llama-2-7B-Chat-GPTQ"
 # Set auth token variable from hugging face
 auth_token = "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"
 
