@@ -85,28 +85,30 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
-# Define a directory for storing uploaded files
 st.title('PDF Upload and Query Interface')
 
-# Initialize session state for upload directory if it doesn't exist
-if 'upload_directory' not in st.session_state:
-    st.session_state.upload_directory = tempfile.mkdtemp()
+# Initialize session state for storing uploaded files
+if 'uploaded_files' not in st.session_state:
+    st.session_state['uploaded_files'] = {}
 
 # File uploader allows user to add PDF
-uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 upload_button = st.button('Upload')
 
-if uploaded_file and upload_button:
-    for file in uploaded_file:
-        # Save the uploaded PDF to the directory
-        with open(os.path.join(st.session_state.upload_directory, file.name), "wb") as f:
-            f.write(file.getbuffer())
-        st.success("File uploaded successfully.")
+if uploaded_files and upload_button:
+    for uploaded_file in uploaded_files:
+        # Read the file and store it in session state
+        st.session_state['uploaded_files'][uploaded_file.name] = uploaded_file.getvalue()
+    st.success("Files uploaded successfully.")
 
-if upload_button:
-    documents = SimpleDirectoryReader(st.session_state.upload_directory).load_data()
+# Process the files after upload
+if upload_button and st.session_state['uploaded_files']:
+    # Create a pseudo directory reader to simulate reading from a directory
+    pseudo_directory = {name: io.BytesIO(data) for name, data in st.session_state['uploaded_files'].items()}
+    documents = SimpleDirectoryReader(pseudo_directory).load_data()
     index = VectorStoreIndex.from_documents(documents)
     # Add your code to use 'documents' and 'index' as required
+
 
 
 
