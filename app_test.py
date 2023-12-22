@@ -110,8 +110,18 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     # Setup index query engine using LLM
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
     
-    response = query_engine.query("test query")
-    st.write(response)  # Check if this returns a valid response
+    if prompt:
+    st.write(f"Received prompt: {prompt}")  # Display the received prompt
+
+    response = query_engine.query(prompt)
+
+    if response:
+        st.write(f"Generated response: {response}")  # Display the response
+    else:
+        st.write("No response generated.")  # Indicate no response
+
+    # Rest of your code...
+
 
     # # Create centered main title
     # st.title('👔 HireMind 🧩')
