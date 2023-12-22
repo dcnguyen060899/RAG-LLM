@@ -85,22 +85,23 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define a directory for storing uploaded files
+UPLOAD_DIRECTORY = "/content/"
 
-# Initialize S3 client
-s3_client = boto3.client('s3', aws_access_key_id='AKIATF3AVWPM723MHBWX', aws_secret_access_key='ktM4AWi5tFqRHDF7EGumsfZamGE47MAthHYCdZs2')
-
-bucket_name = 'your-s3-bucket-name'
-
-def upload_file_to_s3(file, bucket, object_name):
-    s3_client.upload_fileobj(file, bucket, object_name)
+if not os.path.exists(UPLOAD_DIRECTORY):
+    os.makedirs(UPLOAD_DIRECTORY)
 
 st.title('PDF Upload and Query Interface')
 
-uploaded_file = st.file_uploader("Upload PDF", type="pdf")
-if uploaded_file is not None:
-    # Use the name of the file as the object name in S3
-    upload_file_to_s3(uploaded_file, bucket_name, uploaded_file.name)
-    st.success("File uploaded successfully to S3.")
+# File uploader allows user to add PDF
+uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+upload_button = st.button('Upload')
+
+if uploaded_file and upload_button:
+  for file in uploaded_file:
+  # Save the uploaded PDF to the directory
+    with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+      f.write(file.getbuffer())
+    st.success("File uploaded successfully.")
 
 documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
 index = VectorStoreIndex.from_documents(documents)
