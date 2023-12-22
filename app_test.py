@@ -89,16 +89,20 @@ set_global_service_context(service_context)
 st.title('PDF Upload and Query Interface')
 
 # File uploader allows user to add PDF
-with tempfile.TemporaryDirectory() as upload_dir:
+with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+    st.title('PDF Upload and Query Interface')
     documents = []
-    uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+    
+    # File uploader allows user to add PDF
+    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
     upload_button = st.button('Upload')
 
-    if uploaded_files and upload_button:
-        for uploaded_file in uploaded_files:
-            file_path = os.path.join(upload_dir, uploaded_file.name)
-            with open(file_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
+    if uploaded_file and upload_button:
+        for file in uploaded_file:
+            # Save the uploaded PDF to the directory
+            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+                f.write(file.getbuffer())
+            st.success("File uploaded successfully.")
 
         # Now you can use SimpleDirectoryReader on the upload_dir
         documents = SimpleDirectoryReader(upload_dir).load_data()
