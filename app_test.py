@@ -103,7 +103,7 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
             st.success("File uploaded successfully.")
 
         # Now you can use SimpleDirectoryReader on the upload_dir
-        documents = SimpleDirectoryReader(upload_dir).load_data()
+        documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
     
     index = VectorStoreIndex.from_documents(documents)
     
