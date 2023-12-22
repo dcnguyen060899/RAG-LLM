@@ -21,6 +21,7 @@ from pathlib import Path
 import pypdf
 import time
 import os
+import tempfile
 
 # Define variable to hold llama2 weights namingfiner
 name = "gpt2"
