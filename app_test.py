@@ -111,7 +111,7 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
     
     if prompt:
-    st.write(f"Received prompt: {prompt}")  # Display the received prompt
+        st.write(f"Received prompt: {prompt}")  # Display the received prompt
 
     response = query_engine.query(prompt)
 
