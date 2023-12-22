@@ -86,22 +86,30 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define a directory for storing uploaded files
-with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
-    st.title('PDF Upload and Query Interface')
+# Create a temporary directory for file uploads
+UPLOAD_DIRECTORY = tempfile.mkdtemp()
 
-    # File uploader allows user to add PDF
-    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-    upload_button = st.button('Upload')
+st.title('PDF Upload and Query Interface')
 
-    if uploaded_file and upload_button:
-        for file in uploaded_file:
-            # Save the uploaded PDF to the directory
-            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-                f.write(file.getbuffer())
-            st.success("File uploaded successfully.")
+# File uploader allows user to add PDF
+uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+upload_button = st.button('Upload')
 
-documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-index = VectorStoreIndex.from_documents(documents)
+if uploaded_file and upload_button:
+    for file in uploaded_file:
+        # Save the uploaded PDF to the directory
+        with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+            f.write(file.getbuffer())
+        st.success("File uploaded successfully.")
+
+index = None
+# Ensure the directory exists before using it
+if os.path.exists(UPLOAD_DIRECTORY):
+    documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
+    index = VectorStoreIndex.from_documents(documents)
+
+else:
+    st.error("Upload directory does not exist or no files have been uploaded.")
 
 
 # Setup index query engine using LLM
