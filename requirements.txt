@@ -1,0 +1,25 @@
+# Import transformer classes for generaiton
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
+# Import torch for datatype attributes
+import torch
+# Import the prompt wrapper...but for llama index
+from llama_index.prompts.prompts import SimpleInputPrompt
+# Import the llama index HF Wrapper
+from llama_index.llms import HuggingFaceLLM
+# Bring in embeddings wrapper
+from llama_index.embeddings import LangchainEmbedding
+# Bring in HF embeddings - need these to represent document chunks
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+# Bring in stuff to change service context
+from llama_index import set_global_service_context
+from llama_index import ServiceContext
+# Import deps to load documents
+from llama_index import VectorStoreIndex, SimpleDirectoryReader
+from pathlib import Path
+import pypdf
+import time
+import os
+
+!pip install pyngrok==4.1.1
+!pip install transformers
+!pip install langchain einops accelerate bitsandbytes scipy xformers sentencepiece llama-index llama_hub sentence-transformers pypdf streamlit transformers
