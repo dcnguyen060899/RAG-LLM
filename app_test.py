@@ -90,6 +90,7 @@ st.title('PDF Upload and Query Interface')
 
 # File uploader allows user to add PDF
 with tempfile.TemporaryDirectory() as upload_dir:
+    documents = None
     uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 
     if uploaded_files:
