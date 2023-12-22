@@ -12,4 +12,4 @@ sentence-transformers
 pypdf
 streamlit
 transformers
-tempfile==23.3.2
+tempfile
