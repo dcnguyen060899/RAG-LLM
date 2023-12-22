@@ -92,6 +92,10 @@ uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files
 upload_button = st.button('Upload')
 
 if uploaded_file and upload_button:
+    for file in uploaded_file:
+    # Save the uploaded PDF to the directory
+    with open(os.path.join(uploaded_file, file.name), "wb") as f:
+        f.write(file.getbuffer())
     st.success("File uploaded successfully.")
 
 documents = SimpleDirectoryReader(uploaded_file).load_data()
