@@ -92,8 +92,9 @@ st.title('PDF Upload and Query Interface')
 with tempfile.TemporaryDirectory() as upload_dir:
     documents = []
     uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+    upload_button = st.button('Upload')
 
-    if uploaded_files:
+    if uploaded_files and upload_button:
         for uploaded_file in uploaded_files:
             file_path = os.path.join(upload_dir, uploaded_file.name)
             with open(file_path, "wb") as f:
