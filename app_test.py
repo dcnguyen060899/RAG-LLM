@@ -110,8 +110,8 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     # Setup index query engine using LLM
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
     
-    test_response = query_engine.query("test query")
-    st.chat_message(test_response)  # Check if this returns a valid response
+    response = query_engine.query("test query")
+    st.write(response.responses)  # Check if this returns a valid response
 
     # # Create centered main title
     # st.title('👔 HireMind 🧩')
