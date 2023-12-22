@@ -95,21 +95,21 @@ st.title('PDF Upload and Query Interface')
 uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 upload_button = st.button('Upload')
 
-if uploaded_file and upload_button:
-    for file in uploaded_file:
-        # Save the uploaded PDF to the directory
-        with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-            f.write(file.getbuffer())
-        st.success("File uploaded successfully.")
-
 index = None
-# Ensure the directory exists before using it
-if os.path.exists(UPLOAD_DIRECTORY):
-    documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-    index = VectorStoreIndex.from_documents(documents)
 
-else:
-    st.error("Upload directory does not exist or no files have been uploaded.")
+if upload_button:
+    if uploaded_file:
+        for file in uploaded_file:
+            # Save the uploaded PDF to the directory
+            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+                f.write(file.getbuffer())
+            st.success(f"File {file.name} uploaded successfully.")
+
+        # Read documents only after files are uploaded
+        documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
+        index = VectorStoreIndex.from_documents(documents)
+    else:
+        st.warning("Please upload a file.")
 
 
 # Setup index query engine using LLM
