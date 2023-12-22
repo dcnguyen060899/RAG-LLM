@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "gpt2"
+name = "meta-llama/Llama-2-7b-chat-hf"
 # Set auth token variable from hugging face
 auth_token = "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"
 
@@ -34,7 +34,9 @@ def get_tokenizer_model():
     tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name)
+    model = AutoModelForCausalLM.from_pretrained(name, use_auth_token=auth_token, 
+                                                torch_dtype=torch.float16,
+                                                rope_scaling={"type": "dynamic", "factor": 2})
 
     return model, tokenizer
 
