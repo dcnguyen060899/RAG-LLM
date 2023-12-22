@@ -85,23 +85,19 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define a directory for storing uploaded files
-UPLOAD_DIRECTORY = "/content/"
+with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+    st.title('PDF Upload and Query Interface')
 
-if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(UPLOAD_DIRECTORY)
+    # File uploader allows user to add PDF
+    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+    upload_button = st.button('Upload')
 
-st.title('PDF Upload and Query Interface')
-
-# File uploader allows user to add PDF
-uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-upload_button = st.button('Upload')
-
-if uploaded_file and upload_button:
-  for file in uploaded_file:
-  # Save the uploaded PDF to the directory
-    with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-      f.write(file.getbuffer())
-    st.success("File uploaded successfully.")
+    if uploaded_file and upload_button:
+        for file in uploaded_file:
+            # Save the uploaded PDF to the directory
+            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+                f.write(file.getbuffer())
+            st.success("File uploaded successfully.")
 
 documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
 index = VectorStoreIndex.from_documents(documents)
