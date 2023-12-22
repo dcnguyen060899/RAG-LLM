@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "TheBloke/Llama-2-7B-Chat-GPTQ"
+name = "mistralai/Mistral-7B-v0.1"
 # Set auth token variable from hugging face
 auth_token = "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"
 
@@ -34,7 +34,7 @@ def get_tokenizer_model():
     tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name, use_auth_token=auth_token)
+    model = AutoModelForCausalLM.from_pretrained(name)
     
     return model, tokenizer
 
