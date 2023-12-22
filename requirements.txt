@@ -11,5 +11,3 @@ llama_hub
 sentence-transformers
 pypdf
 streamlit
-transformers
-tempfile
