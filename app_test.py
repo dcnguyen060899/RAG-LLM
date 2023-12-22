@@ -127,12 +127,19 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     prompt = st.chat_input('Input your prompt here')
     
     if prompt:
-      st.chat_message('user').markdown(prompt)
-      st.session_state.messages.append({'role': 'user', 'content': prompt})
+        st.chat_message('user').markdown(prompt)
+        st.session_state.messages.append({'role': 'user', 'content': prompt})
     
-      response = query_engine.query(prompt)
+        # Debug: Print prompt to console
+        print("Prompt:", prompt)
     
-      st.chat_message('assistant').markdown(response)
-      st.session_state.messages.append(
-          {'role': 'assistant', 'content': response}
-      )
+        response = query_engine.query(prompt)
+    
+        # Debug: Print response to console
+        print("Response:", response)
+    
+        st.chat_message('assistant').markdown(response)
+        st.session_state.messages.append(
+            {'role': 'assistant', 'content': response}
+        )
+
