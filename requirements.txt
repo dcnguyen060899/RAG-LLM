@@ -11,4 +11,4 @@ llama_hub
 sentence-transformers
 pypdf
 streamlit
-google-cloud-storage
+tempfile
