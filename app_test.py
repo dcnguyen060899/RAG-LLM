@@ -88,6 +88,7 @@ set_global_service_context(service_context)
 st.title('PDF Upload and Query Interface')
 # Use a temporary directory for file uploads
 with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+    UPLOAD_DIRECTORY = UPLOAD_DIRECTORY
     st.title('PDF Upload and Query Interface')
 
     # File uploader allows user to add PDF
