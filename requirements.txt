@@ -1,4 +1,3 @@
-pyngrok==4.1.1
 transformers
 langchain
 einops
@@ -13,4 +12,4 @@ sentence-transformers
 pypdf
 streamlit
 transformers
-tempfile
+tempfile==23.3.2
