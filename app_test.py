@@ -84,19 +84,7 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
-# Initialize a GCS client
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'home/user/ihduynguyen/download/ragllm-408909-54ffd8b25df8.json'
-client = storage.Client()
-bucket_name = 'ragllm'
-bucket = client.bucket(bucket_name)
-
-def upload_to_gcs(uploaded_file):
-    if uploaded_file is not None:
-        blob = bucket.blob(uploaded_file.name)
-        blob.upload_from_string(uploaded_file.getvalue())
-        st.success(f"File {uploaded_file.name} uploaded to {bucket_name}.")
-# Define a directory for storing uploaded files
-
+# Define variable to store uploaded files
 st.title('PDF Upload and Query Interface')
 
 # File uploader allows user to add PDF
