@@ -20,6 +20,18 @@ import pypdf
 import time
 import os
 
-!pip install pyngrok==4.1.1
-!pip install transformers
-!pip install langchain einops accelerate bitsandbytes scipy xformers sentencepiece llama-index llama_hub sentence-transformers pypdf streamlit transformers
+pyngrok==4.1.1
+transformers
+langchain
+einops
+accelerate
+bitsandbytes
+scipy
+xformers
+sentencepiece
+llama-index
+llama_hub
+sentence-transformers
+pypdf
+streamlit
+transformers
