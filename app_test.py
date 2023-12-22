@@ -51,8 +51,8 @@ update_button = st.button('Request')
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=4096,
-    max_new_tokens=256,
+    context_window=1024,
+    max_new_tokens=1024,
     system_prompt="",  # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
