@@ -85,52 +85,54 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
+# Define a directory for storing uploaded files
+
+# Initialize S3 client
+s3_client = boto3.client('s3', aws_access_key_id='AKIATF3AVWPM723MHBWX', aws_secret_access_key='ktM4AWi5tFqRHDF7EGumsfZamGE47MAthHYCdZs2')
+
+bucket_name = 'your-s3-bucket-name'
+
+def upload_file_to_s3(file, bucket, object_name):
+    s3_client.upload_fileobj(file, bucket, object_name)
+
 st.title('PDF Upload and Query Interface')
-# Use a temporary directory for file uploads
-with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
-    UPLOAD_DIRECTORY = UPLOAD_DIRECTORY
-    st.title('PDF Upload and Query Interface')
 
-    # File uploader allows user to add PDF
-    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-    upload_button = st.button('Upload')
+uploaded_file = st.file_uploader("Upload PDF", type="pdf")
+if uploaded_file is not None:
+    # Use the name of the file as the object name in S3
+    upload_file_to_s3(uploaded_file, bucket_name, uploaded_file.name)
+    st.success("File uploaded successfully to S3.")
 
-    if uploaded_file and upload_button:
-        for file in uploaded_file:
-            # Save the uploaded PDF to the directory
-            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-                f.write(file.getbuffer())
-            st.success("File uploaded successfully.")
+documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
+index = VectorStoreIndex.from_documents(documents)
 
-    documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-    index = VectorStoreIndex.from_documents(documents)
 
-    # Setup index query engine using LLM
-    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+# Setup index query engine using LLM
+query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
-    # Create centered main title
-    st.title('👔 HireMind 🧩')
+# Create centered main title
+st.title('👔 HireMind 🧩')
 
-    # setup a session to hold all the old prompt
-    if 'messages' not in st.session_state:
-      st.session_state.messages = []
-    
-    # print out the history message
-    for message in st.session_state.messages:
-      st.chat_message(message['role']).markdown(message['content'])
-    
-    
-    # Create a text input box for the user
-    # If the user hits enter
-    prompt = st.chat_input('Input your prompt here')
-    
-    if prompt:
-      st.chat_message('user').markdown(prompt)
-      st.session_state.messages.append({'role': 'user', 'content': prompt})
-    
-      response = query_engine.query(prompt)
-    
-      st.chat_message('assistant').markdown(response)
-      st.session_state.messages.append(
-          {'role': 'assistant', 'content': response}
-      )
+# setup a session to hold all the old prompt
+if 'messages' not in st.session_state:
+  st.session_state.messages = []
+
+# print out the history message
+for message in st.session_state.messages:
+  st.chat_message(message['role']).markdown(message['content'])
+
+
+# Create a text input box for the user
+# If the user hits enter
+prompt = st.chat_input('Input your prompt here')
+
+if prompt:
+  st.chat_message('user').markdown(prompt)
+  st.session_state.messages.append({'role': 'user', 'content': prompt})
+
+  response = query_engine.query(prompt)
+
+  st.chat_message('assistant').markdown(response)
+  st.session_state.messages.append(
+      {'role': 'assistant', 'content': response}
+  )
