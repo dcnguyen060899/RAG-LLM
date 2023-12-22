@@ -86,58 +86,50 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 st.title('PDF Upload and Query Interface')
+# Use a temporary directory for file uploads
+with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+    st.title('PDF Upload and Query Interface')
 
-# Initialize session state for storing uploaded files
-if 'uploaded_files' not in st.session_state:
-    st.session_state['uploaded_files'] = {}
+    # File uploader allows user to add PDF
+    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+    upload_button = st.button('Upload')
 
-# File uploader allows user to add PDF
-uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-upload_button = st.button('Upload')
+    if uploaded_file and upload_button:
+        for file in uploaded_file:
+            # Save the uploaded PDF to the directory
+            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+                f.write(file.getbuffer())
+            st.success("File uploaded successfully.")
 
-if uploaded_files and upload_button:
-    for uploaded_file in uploaded_files:
-        # Read the file and store it in session state
-        st.session_state['uploaded_files'][uploaded_file.name] = uploaded_file.getvalue()
-    st.success("Files uploaded successfully.")
-
-# Process the files after upload
-if upload_button and st.session_state['uploaded_files']:
-    # Create a pseudo directory reader to simulate reading from a directory
-    pseudo_directory = {name: io.BytesIO(data) for name, data in st.session_state['uploaded_files'].items()}
-    documents = SimpleDirectoryReader(pseudo_directory).load_data()
+    documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
     index = VectorStoreIndex.from_documents(documents)
-    # Add your code to use 'documents' and 'index' as required
 
+    # Setup index query engine using LLM
+    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
+    # Create centered main title
+    st.title('👔 HireMind 🧩')
 
-
-# Setup index query engine using LLM
-query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
-
-# Create centered main title
-st.title('👔 HireMind 🧩')
-
-# setup a session to hold all the old prompt
-if 'messages' not in st.session_state:
-  st.session_state.messages = []
-
-# print out the history message
-for message in st.session_state.messages:
-  st.chat_message(message['role']).markdown(message['content'])
-
-
-# Create a text input box for the user
-# If the user hits enter
-prompt = st.chat_input('Input your prompt here')
-
-if prompt:
-  st.chat_message('user').markdown(prompt)
-  st.session_state.messages.append({'role': 'user', 'content': prompt})
-
-  response = query_engine.query(prompt)
-
-  st.chat_message('assistant').markdown(response)
-  st.session_state.messages.append(
-      {'role': 'assistant', 'content': response}
-  )
+    # setup a session to hold all the old prompt
+    if 'messages' not in st.session_state:
+      st.session_state.messages = []
+    
+    # print out the history message
+    for message in st.session_state.messages:
+      st.chat_message(message['role']).markdown(message['content'])
+    
+    
+    # Create a text input box for the user
+    # If the user hits enter
+    prompt = st.chat_input('Input your prompt here')
+    
+    if prompt:
+      st.chat_message('user').markdown(prompt)
+      st.session_state.messages.append({'role': 'user', 'content': prompt})
+    
+      response = query_engine.query(prompt)
+    
+      st.chat_message('assistant').markdown(response)
+      st.session_state.messages.append(
+          {'role': 'assistant', 'content': response}
+      )
