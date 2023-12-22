@@ -86,44 +86,59 @@ service_context = ServiceContext.from_defaults(
 set_global_service_context(service_context)
 
 # Define a directory for storing uploaded files
-# Using the temporary directory
-with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
-    st.title('PDF Upload and Query Interface')
+st.title('PDF Upload and Query Interface')
 
-    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-    upload_button = st.button('Upload')
+# Initialize session state for upload directory if it doesn't exist
+if 'upload_directory' not in st.session_state:
+    st.session_state.upload_directory = tempfile.mkdtemp()
 
-    query_engine = None  # Initialize query_engine as None
+# File uploader allows user to add PDF
+uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+upload_button = st.button('Upload')
 
-    if uploaded_file and upload_button:
-        for file in uploaded_file:
-            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-                f.write(file.getbuffer())
-            st.success("File uploaded successfully.")
+if uploaded_file and upload_button:
+    for file in uploaded_file:
+        # Save the uploaded PDF to the directory
+        with open(os.path.join(st.session_state.upload_directory, file.name), "wb") as f:
+            f.write(file.getbuffer())
+        st.success("File uploaded successfully.")
 
-        documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-        if documents:
-            index = VectorStoreIndex.from_documents(documents)
-            if index:
-                query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+documents = None
+index = None
 
-    st.title('👔 HireMind 🧩')
+if upload_button:
+    documents = SimpleDirectoryReader(st.session_state.upload_directory).load_data()
+    index = VectorStoreIndex.from_documents(documents)
+    # Add your code to use 'documents' and 'index' as required
 
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
 
-    for message in st.session_state.messages:
-        st.chat_message(message['role']).markdown(message['content'])
 
-    prompt = st.chat_input('Input your prompt here')
+# Setup index query engine using LLM
+query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
-    if prompt:
-        st.chat_message('user').markdown(prompt)
-        st.session_state.messages.append({'role': 'user', 'content': prompt})
+# Create centered main title
+st.title('👔 HireMind 🧩')
 
-        if query_engine is not None:
-            response = query_engine.query(prompt)
-            st.chat_message('assistant').markdown(response)
-            st.session_state.messages.append({'role': 'assistant', 'content': response})
-        else:
-            st.error("Query engine not initialized. Please upload a PDF and click 'Upload'.")
+# setup a session to hold all the old prompt
+if 'messages' not in st.session_state:
+  st.session_state.messages = []
+
+# print out the history message
+for message in st.session_state.messages:
+  st.chat_message(message['role']).markdown(message['content'])
+
+
+# Create a text input box for the user
+# If the user hits enter
+prompt = st.chat_input('Input your prompt here')
+
+if prompt:
+  st.chat_message('user').markdown(prompt)
+  st.session_state.messages.append({'role': 'user', 'content': prompt})
+
+  response = query_engine.query(prompt)
+
+  st.chat_message('assistant').markdown(response)
+  st.session_state.messages.append(
+      {'role': 'assistant', 'content': response}
+  )
