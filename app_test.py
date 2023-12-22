@@ -111,11 +111,11 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     
     # setup a session to hold all the old prompt
     if 'messages' not in st.session_state:
-      st.session_state.messages = []
+        st.session_state.messages = []
     
     # print out the history message
     for message in st.session_state.messages:
-      st.chat_message(message['role']).markdown(message['content'])
+        st.chat_message(message['role']).markdown(message['content'])
     
     
     # Create a text input box for the user
@@ -123,12 +123,13 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     prompt = st.chat_input('Input your prompt here')
     
     if prompt:
-      st.chat_message('user').markdown(prompt)
-      st.session_state.messages.append({'role': 'user', 'content': prompt})
+        st.chat_message('user').markdown(prompt)
+        st.session_state.messages.append({'role': 'user', 'content': prompt})
     
-      response = query_engine.query(prompt)
+        response = query_engine.query(prompt)
     
-      st.chat_message('assistant').markdown(response)
-      st.session_state.messages.append(
-          {'role': 'assistant', 'content': response}
+        st.chat_message('assistant').markdown(response)
+        st.session_state.messages.append(
+            
+        {'role': 'assistant', 'content': response}
       )
