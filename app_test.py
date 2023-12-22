@@ -28,7 +28,7 @@ name = "gpt2"
 # Set auth token variable from hugging face
 auth_token = "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"
 
-@st.cache(allow_output_mutation=True)
+@st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
     tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
@@ -41,7 +41,7 @@ def get_tokenizer_model():
 model, tokenizer = get_tokenizer_model()
 
 # Initialize the SimpleInputPrompt with an empty template
-query_wrapper_prompt = SimpleInputPrompt("{query_str} [/INST]")
+query_wrapper_prompt = SimpleInputPrompt("{query_str}")
 
 # Streamlit UI to let the user update the system prompt
 # Start with an empty string or a default prompt
