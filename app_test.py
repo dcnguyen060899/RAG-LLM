@@ -43,11 +43,6 @@ model, tokenizer = get_tokenizer_model()
 # Initialize the SimpleInputPrompt with an empty template
 query_wrapper_prompt = SimpleInputPrompt("{query_str} [/INST]")
 
-test_input = "This is a test input."
-response = model.generate(test_input)
-st.write(response)
-
-
 # Streamlit UI to let the user update the system prompt
 # Start with an empty string or a default prompt
 default_prompt = ""
@@ -94,7 +89,8 @@ set_global_service_context(service_context)
 # File uploader allows user to add PDF
 with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
     st.title('PDF Upload and Query Interface')
-    documents = []
+    # documents = []
+    query_engine = None
     
     # File uploader allows user to add PDF
     uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
@@ -110,10 +106,10 @@ with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
         # Now you can use SimpleDirectoryReader on the upload_dir
         documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
     
-    index = VectorStoreIndex.from_documents(documents)
-    
-    # Setup index query engine using LLM
-    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+        index = VectorStoreIndex.from_documents(documents)
+        
+        # Setup index query engine using LLM
+        query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
     # Create centered main title
     st.title('👔 HireMind 🧩')
