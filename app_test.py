@@ -70,7 +70,7 @@ if update_button:
     update_system_prompt(user_system_prompt)
     st.success('Requested')
 
-st.write(default_prompt)
+st.write(system_prompt)
 
 # Create and dl embeddings instance
 embeddings=LangchainEmbedding(
