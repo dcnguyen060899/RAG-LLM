@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Import transformer classes for generaiton
-from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2Model
 # Import torch for datatype attributes
 import torch
 # Import the prompt wrapper...but for llama index
@@ -31,10 +31,10 @@ auth_token = "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"
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(name, use_auth_token=auth_token)
+    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = AutoModelForCausalLM.from_pretrained(name)
+    model = GPT2Model.from_pretrained(name)
     
     return model, tokenizer
 
@@ -69,8 +69,9 @@ if update_button:
     # Update the system prompt and reinitialize the LLM
     update_system_prompt(user_system_prompt)
     st.success('Requested')
-
-st.write(llm.system_prompt)
+    
+# check if user request save to the memory
+# st.write(llm.system_prompt)
 
 # Create and dl embeddings instance
 embeddings=LangchainEmbedding(
