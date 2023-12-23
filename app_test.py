@@ -18,6 +18,7 @@ from llama_index import ServiceContext
 # Import deps to load documents
 from llama_index import VectorStoreIndex, SimpleDirectoryReader
 from pathlib import Path
+import pypdf
 import time
 import os
 import tempfile
