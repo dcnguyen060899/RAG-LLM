@@ -9,5 +9,5 @@ sentencepiece
 llama-index
 llama_hub
 sentence-transformers
-pypdf2
+pypdf
 streamlit
