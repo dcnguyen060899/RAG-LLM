@@ -34,7 +34,7 @@ def get_tokenizer_model():
     tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = GPT2Model.from_pretrained(name)
+    model = GPT2LMHeadModel.from_pretrained(name)
     
     return model, tokenizer
 
