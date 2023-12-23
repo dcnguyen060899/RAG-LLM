@@ -126,7 +126,6 @@ for message in st.session_state.messages:
 # If the user hits enter
 prompt = st.chat_input('Input your prompt here')
 
-@st.cache_resource
 if prompt:
     st.chat_message('user').markdown(prompt)
     st.session_state.messages.append({'role': 'user', 'content': prompt})
