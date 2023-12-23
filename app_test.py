@@ -146,8 +146,10 @@ for message in st.session_state.messages:
 # Create a text input box for the user
 # If the user hits enter
 prompt = st.chat_input('Input your prompt here')
+response = query_engine.query(prompt)
 
-combined_input = f"{query_engine} {prompt}"
+combined_input = f"{response} {prompt}"
+
 
 if prompt:
     st.chat_message('user').markdown(prompt)
