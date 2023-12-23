@@ -28,7 +28,7 @@ name = "gpt2-medium"
 # Set auth token variable from hugging face
 auth_token = "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"
 
-@st.cache_resource
+@st.cache
 def get_tokenizer_model():
     # Create tokenizer
     tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
@@ -110,6 +110,7 @@ set_global_service_context(service_context)
 
 
 # Upload PDF and process it
+@st.cache
 documents = []
 # Upload PDF file
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
@@ -145,25 +146,17 @@ for message in st.session_state.messages:
         
 # Create a text input box for the user
 # If the user hits enter
-# prompt = st.chat_input('Input your prompt here')
-user_prompt = "Tell me about the tallest mountain."
-retrieved_info = query_engine.query(user_prompt)
-combined_input = f"{retrieved_info} {user_prompt}"
-input_ids = tokenizer.encode(combined_input, return_tensors='pt')
-outputs = model.generate(input_ids, max_length=50, pad_token_id=tokenizer.eos_token_id)
-generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-st.write(generated_text)
+prompt = st.chat_input('Input your prompt here')
 
-# if prompt:
-#     st.chat_message('user').markdown(prompt)
-#     st.session_state.messages.append({'role': 'user', 'content': prompt})
+if prompt:
+    st.chat_message('user').markdown(prompt)
+    st.session_state.messages.append({'role': 'user', 'content': prompt})
 
-#     # Tokenize and generate a response
-#     input_ids = tokenizer.encode(prompt, return_tensors='pt')
-#     outputs = model.generate(input_ids, max_length=50, pad_token_id=tokenizer.eos_token_id)     
+    @st.cache
+    response = query_engine.query(prompt)
     
-#     st.chat_message('assistant').markdown(outputs)
-#     st.session_state.messages.append(
-#         {'role': 'assistant', 'content': outputs}
-#     )
+    st.chat_message('assistant').markdown(response)
+    st.session_state.messages.append(
+        {'role': 'assistant', 'content': response}
+    )
 
