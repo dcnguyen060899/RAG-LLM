@@ -70,6 +70,8 @@ if update_button:
     update_system_prompt(user_system_prompt)
     st.success('Requested')
 
+st.write(system_prompt)
+
 # Create and dl embeddings instance
 embeddings=LangchainEmbedding(
     HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
