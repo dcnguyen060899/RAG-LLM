@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "gpt2"
+name = "gpt2-medium"
 # Set auth token variable from hugging face
 auth_token = "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"
 
