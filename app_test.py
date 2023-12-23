@@ -28,7 +28,7 @@ name = "gpt2-medium"
 # Set auth token variable from hugging face
 auth_token = "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"
 
-@st.cache
+@st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
     tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
@@ -151,7 +151,7 @@ if prompt:
     st.chat_message('user').markdown(prompt)
     st.session_state.messages.append({'role': 'user', 'content': prompt})
 
-    @st.cache
+    @st.cache_resource
     response = query_engine.query(prompt)
     
     st.chat_message('assistant').markdown(response)
