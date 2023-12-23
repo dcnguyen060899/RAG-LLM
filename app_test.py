@@ -106,15 +106,6 @@ set_global_service_context(service_context)
 
 #     # Now you can use SimpleDirectoryReader on the upload_dir
 
-# Function to extract text from a PDF file
-def extract_text_from_pdf(file):
-    with io.BytesIO(file.getbuffer()) as f:
-        reader = PyPDF2.PdfFileReader(f)
-        num_pages = reader.numPages
-        text = ""
-        for page_num in range(num_pages):
-            text += reader.getPage(page_num).extractText()
-        return text
 
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
 document_text = extract_text_from_pdf(uploaded_file)
