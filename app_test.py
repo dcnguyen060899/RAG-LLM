@@ -51,8 +51,8 @@ update_button = st.button('Request')
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=4096,
-    max_new_tokens=256,
+    context_window=1024,
+    max_new_tokens=1024,
     system_prompt="",  # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
@@ -88,30 +88,9 @@ service_context = ServiceContext.from_defaults(
 # And set the service context
 set_global_service_context(service_context)
 
-# Define variable to store uploaded files
-# File uploader allows user to add PDF
-# with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
-#     st.title('PDF Upload and Query Interface')
-#     # documents = []
-#     query_engine = None
-    
-#     # File uploader allows user to add PDF
-#     uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-#     upload_button = st.button('Upload')
-
-#     if uploaded_file and upload_button:
-#         for file in uploaded_file:
-#             # Save the uploaded PDF to the directory
-#             with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-#                 f.write(file.getbuffer())
-#             st.success("File uploaded successfully.")
-
-#     # Now you can use SimpleDirectoryReader on the upload_dir
-
 
 # Upload PDF and process it
 documents = []
-# Upload PDF file
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
 
 if uploaded_file is not None:
@@ -147,6 +126,7 @@ for message in st.session_state.messages:
 # If the user hits enter
 prompt = st.chat_input('Input your prompt here')
 
+@st.cache_resource
 if prompt:
     st.chat_message('user').markdown(prompt)
     st.session_state.messages.append({'role': 'user', 'content': prompt})
