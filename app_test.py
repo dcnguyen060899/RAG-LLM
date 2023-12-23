@@ -110,23 +110,20 @@ set_global_service_context(service_context)
 
 # Upload PDF and process it
 documents = []
-# Set up file uploader to allow multiple files
-uploaded_files = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+# Upload PDF file
+uploaded_file = st.file_uploader("Upload PDF", type="pdf")
 
-# Create a temporary directory for processing files
-with tempfile.TemporaryDirectory() as temp_dir:
-    if uploaded_files:
-        # Process each uploaded file
-        for uploaded_file in uploaded_files:
-            # Generate a temporary file path for the uploaded file
-            temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+if uploaded_file is not None:
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Write the uploaded file to a file in the temporary directory
+        temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+        with open(temp_file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
 
-            # Write the uploaded file's contents to the temporary file
-            with open(temp_file_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-            
-            st.success(f"File {uploaded_file.name} uploaded successfully.")
-
+        # Now you can use SimpleDirectoryReader on the temp_dir
+        documents = SimpleDirectoryReader(temp_dir).load_data()
+        
 index = VectorStoreIndex.from_documents(documents)
         
 # Setup index query engine using LLM
