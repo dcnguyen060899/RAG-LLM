@@ -150,8 +150,7 @@ prompt = st.chat_input('Input your prompt here')
 if prompt:
     st.chat_message('user').markdown(prompt)
     st.session_state.messages.append({'role': 'user', 'content': prompt})
-
-    @st.cache_resource
+    
     response = query_engine.query(prompt)
     
     st.chat_message('assistant').markdown(response)
