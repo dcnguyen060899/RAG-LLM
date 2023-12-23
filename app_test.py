@@ -110,7 +110,7 @@ set_global_service_context(service_context)
 
 # Upload PDF and process it
 documents = []
-uploaded_file = st.file_uploader("Upload PDF", type="pdf")
+uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
 
 if uploaded_file is not None:
     # Create a temporary directory
