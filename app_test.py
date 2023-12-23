@@ -146,12 +146,18 @@ for message in st.session_state.messages:
 # Create a text input box for the user
 # If the user hits enter
 prompt = st.chat_input('Input your prompt here')
-        
+
+combined_input = f"{retrieved_data} {prompt}"
+
 if prompt:
     st.chat_message('user').markdown(prompt)
     st.session_state.messages.append({'role': 'user', 'content': prompt})
-        
-    response = query_engine.query(prompt)
+
+    # Tokenize and generate a response
+    input_ids = tokenizer.encode(combined_input, return_tensors='pt')
+    output_sequences = model.generate(input_ids=input_ids, max_length=50)
+    generated_text = tokenizer.decode(output_sequences[0], skip_special_tokens=True)
+    response = generated_text
         
     st.chat_message('assistant').markdown(response)
     st.session_state.messages.append(
