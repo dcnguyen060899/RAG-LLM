@@ -110,7 +110,6 @@ set_global_service_context(service_context)
 
 
 # Upload PDF and process it
-@st.cache
 documents = []
 # Upload PDF file
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
