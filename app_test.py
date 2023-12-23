@@ -24,7 +24,7 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "mistralai/Mistral-7B-v0.1"
+name = "gpt2"
 # Set auth token variable from hugging face
 auth_token = "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"
 
