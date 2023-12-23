@@ -87,54 +87,78 @@ set_global_service_context(service_context)
 
 # Define variable to store uploaded files
 # File uploader allows user to add PDF
-with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
-    st.title('PDF Upload and Query Interface')
-    # documents = []
-    query_engine = None
+# with tempfile.TemporaryDirectory() as UPLOAD_DIRECTORY:
+#     st.title('PDF Upload and Query Interface')
+#     # documents = []
+#     query_engine = None
     
-    # File uploader allows user to add PDF
-    uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
-    upload_button = st.button('Upload')
+#     # File uploader allows user to add PDF
+#     uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files=True)
+#     upload_button = st.button('Upload')
 
-    if uploaded_file and upload_button:
-        for file in uploaded_file:
-            # Save the uploaded PDF to the directory
-            with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
-                f.write(file.getbuffer())
-            st.success("File uploaded successfully.")
+#     if uploaded_file and upload_button:
+#         for file in uploaded_file:
+#             # Save the uploaded PDF to the directory
+#             with open(os.path.join(UPLOAD_DIRECTORY, file.name), "wb") as f:
+#                 f.write(file.getbuffer())
+#             st.success("File uploaded successfully.")
 
-    # Now you can use SimpleDirectoryReader on the upload_dir
-    documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-    
-    index = VectorStoreIndex.from_documents(documents)
+#     # Now you can use SimpleDirectoryReader on the upload_dir
+
+# Function to extract text from a PDF file
+def extract_text_from_pdf(file):
+    with io.BytesIO(file.getbuffer()) as f:
+        reader = PyPDF2.PdfFileReader(f)
+        num_pages = reader.numPages
+        text = ""
+        for page_num in range(num_pages):
+            text += reader.getPage(page_num).extractText()
+        return text
+
+document_text = extract_text_from_pdf(uploaded_file)
+
+# For demonstration, just show the first 500 characters of the document
+st.text_area("Extracted Text", document_text[:500], height=150)
+
+# Vectorize the document (assuming SimpleDirectoryReader can handle direct text)
+# Here, you might need to adjust based on how SimpleDirectoryReader expects data
+documents = [document_text]
+index = VectorStoreIndex.from_documents(documents)
+
+
+# # Upload PDF and process it
+# uploaded_file = st.file_uploader("Upload PDF", type="pdf")
+# documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
+
+# index = VectorStoreIndex.from_documents(documents)
         
-    # Setup index query engine using LLM
-    query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+# Setup index query engine using LLM
+query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
-    # Create centered main title
-    st.title('👔 HireMind 🧩')
+# Create centered main title
+st.title('👔 HireMind 🧩')
         
-    # setup a session to hold all the old prompt
-    if 'messages' not in st.session_state:
+# setup a session to hold all the old prompt
+if 'messages' not in st.session_state:
         st.session_state.messages = []
         
-    # print out the history message
-    for message in st.session_state.messages:
+# print out the history message
+for message in st.session_state.messages:
         st.chat_message(message['role']).markdown(message['content'])
         
         
-    # Create a text input box for the user
-    # If the user hits enter
-    prompt = st.chat_input('Input your prompt here')
+# Create a text input box for the user
+# If the user hits enter
+prompt = st.chat_input('Input your prompt here')
         
-    if prompt:
-        st.chat_message('user').markdown(prompt)
-        st.session_state.messages.append({'role': 'user', 'content': prompt})
+if prompt:
+    st.chat_message('user').markdown(prompt)
+    st.session_state.messages.append({'role': 'user', 'content': prompt})
         
-        response = query_engine.query(prompt)
+    response = query_engine.query(prompt)
         
-        st.chat_message('assistant').markdown(response)
-        st.session_state.messages.append(
-            {'role': 'assistant', 'content': response}
-        )
+    st.chat_message('assistant').markdown(response)
+    st.session_state.messages.append(
+        {'role': 'assistant', 'content': response}
+    )
 
