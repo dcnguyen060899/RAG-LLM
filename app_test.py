@@ -107,23 +107,22 @@ set_global_service_context(service_context)
 #     # Now you can use SimpleDirectoryReader on the upload_dir
 
 
+# Upload PDF and process it
+documents = []
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
-document_text = extract_text_from_pdf(uploaded_file)
 
-# For demonstration, just show the first 500 characters of the document
-st.text_area("Extracted Text", document_text[:500], height=150)
+if uploaded_file is not None:
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Write the uploaded file to a file in the temporary directory
+        temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+        with open(temp_file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
 
-# Vectorize the document (assuming SimpleDirectoryReader can handle direct text)
-# Here, you might need to adjust based on how SimpleDirectoryReader expects data
-documents = [document_text]
+        # Now you can use SimpleDirectoryReader on the temp_dir
+        documents = SimpleDirectoryReader(temp_dir).load_data()
+
 index = VectorStoreIndex.from_documents(documents)
-
-
-# # Upload PDF and process it
-# uploaded_file = st.file_uploader("Upload PDF", type="pdf")
-# documents = SimpleDirectoryReader(UPLOAD_DIRECTORY).load_data()
-
-# index = VectorStoreIndex.from_documents(documents)
         
 # Setup index query engine using LLM
 query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
