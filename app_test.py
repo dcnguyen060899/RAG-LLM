@@ -115,6 +115,7 @@ def extract_text_from_pdf(file):
             text += reader.getPage(page_num).extractText()
         return text
 
+uploaded_file = st.file_uploader("Upload PDF", type="pdf")
 document_text = extract_text_from_pdf(uploaded_file)
 
 # For demonstration, just show the first 500 characters of the document
