@@ -145,24 +145,25 @@ for message in st.session_state.messages:
         
 # Create a text input box for the user
 # If the user hits enter
-prompt = st.chat_input('Input your prompt here')
-responses = query_engine.query(prompt)
+# prompt = st.chat_input('Input your prompt here')
+user_prompt = "Tell me about the tallest mountain."
+retrieved_info = query_engine.query(user_prompt)
+combined_input = f"{retrieved_info} {user_prompt}"
+input_ids = tokenizer.encode(combined_input, return_tensors='pt')
+outputs = model.generate(input_ids, max_length=50, pad_token_id=tokenizer.eos_token_id)
+generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+st.write(generated_text)
 
-combined_input = f"{responses} {prompt}"
+# if prompt:
+#     st.chat_message('user').markdown(prompt)
+#     st.session_state.messages.append({'role': 'user', 'content': prompt})
 
-
-if prompt:
-    st.chat_message('user').markdown(prompt)
-    st.session_state.messages.append({'role': 'user', 'content': prompt})
-
-    # Tokenize and generate a response
-    input_ids = tokenizer.encode(combined_input, return_tensors='pt')
-    output_sequences = model.generate(input_ids=input_ids, max_length=50)
-    generated_text = tokenizer.decode(output_sequences[0], skip_special_tokens=True)
-    response = generated_text
-        
-    st.chat_message('assistant').markdown(response)
-    st.session_state.messages.append(
-        {'role': 'assistant', 'content': response}
-    )
+#     # Tokenize and generate a response
+#     input_ids = tokenizer.encode(prompt, return_tensors='pt')
+#     outputs = model.generate(input_ids, max_length=50, pad_token_id=tokenizer.eos_token_id)     
+    
+#     st.chat_message('assistant').markdown(outputs)
+#     st.session_state.messages.append(
+#         {'role': 'assistant', 'content': outputs}
+#     )
 
