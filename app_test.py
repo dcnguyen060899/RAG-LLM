@@ -123,6 +123,7 @@ if uploaded_file is not None:
 
         # Now you can use SimpleDirectoryReader on the temp_dir
         documents = SimpleDirectoryReader(temp_dir).load_data()
+        st.success(f"File {uploaded_file.name} uploaded successfully.")
         
 index = VectorStoreIndex.from_documents(documents)
         
