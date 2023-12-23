@@ -43,6 +43,11 @@ model, tokenizer = get_tokenizer_model()
 # Initialize the SimpleInputPrompt with an empty template
 query_wrapper_prompt = SimpleInputPrompt("{query_str} [/INST]")
 
+test_input = "This is a test input."
+response = model.generate(test_input)
+st.write(response)
+
+
 # Streamlit UI to let the user update the system prompt
 # Start with an empty string or a default prompt
 default_prompt = ""
