@@ -115,8 +115,10 @@ uploaded_file = st.file_uploader("Upload PDF", type="pdf", accept_multiple_files
 if uploaded_file is not None:
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
-        # Write the uploaded file to a file in the temporary directory
+        # Ensure that uploaded_file is not None before accessing its name
         temp_file_path = os.path.join(temp_dir, uploaded_file.name)
+
+        # Write the uploaded file to a file in the temporary directory
         with open(temp_file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
 
