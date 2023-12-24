@@ -41,11 +41,15 @@ def get_tokenizer_model():
 model, tokenizer = get_tokenizer_model()
 
 # disclaimer
-st.title('LLM Deployment for Production Prototype')
+st.title('LLM Deployment Prototype for Production')
+st.text("Special thanks to my mentor, Medkham Chanthavong, for all the support in making this project a reality.\
+Connect with Medkham on LinkedIn: [Medkham Chanthavong](https://www.linkedin.com/in/medkham-chanthavong-4524b0125/).")
+
 st.subheader('Disclaimer')
 st.write("Due to Streamlit's lack of cloud-GPU support, we're using GPT-2 instead of Llama 2 7B. \
 GPT-2 is smaller and less adept at accurately retrieving information from external data. \
 This site serves as a prototype for deploying Large Language Models (LLMs) and should not be expected to retrieve precise data from external sources.\
+As you would expect, the model would generate repetitive corpus of text. \
 For a more advanced demonstration using Llama 2 7B, please visit our Colab notebook: [LLM Deployment Prototype](https://colab.research.google.com/drive/1bGf9rKntMjH4KtpKs9ryucj1nbiKs_zk?usp=sharing).")
 
 
