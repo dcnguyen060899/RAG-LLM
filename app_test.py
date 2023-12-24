@@ -52,7 +52,7 @@ update_button = st.button('Request')
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
     context_window=1024,
-    max_new_tokens=100,
+    max_new_tokens=256,
     system_prompt="",   # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
@@ -80,7 +80,7 @@ embeddings=LangchainEmbedding(
 
 # Create new service context instance
 service_context = ServiceContext.from_defaults(
-    chunk_size=512,
+    chunk_size=1024,
     llm=llm,
     embed_model=embeddings
 )
