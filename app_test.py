@@ -39,6 +39,13 @@ def get_tokenizer_model():
     return model, tokenizer
 
 model, tokenizer = get_tokenizer_model()
+# disclaimer
+st.header('Disclaimer')
+st.write('Streamlit doesn't have paid cloud-gpu therefore I use gpt2 instead of llama 2 7b. /
+It is a smaller model with a weaker, less accurate capability to retrieval correct information from external data. /
+This website is a practice prototype for LLM deployment for production. Don't expect the model to retrieve correct data from your external data. /
+If you want a more capable model for testing, please visit: https://colab.research.google.com/drive/1bGf9rKntMjH4KtpKs9ryucj1nbiKs_zk?usp=sharing') 
+
 
 # Initialize the SimpleInputPrompt with an empty template
 query_wrapper_prompt = SimpleInputPrompt("{query_str}")
@@ -52,7 +59,7 @@ update_button = st.button('Request')
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
     context_window=1024,
-    max_new_tokens=256,
+    max_new_tokens=128,
     system_prompt="",   # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
