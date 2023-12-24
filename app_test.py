@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Import transformer classes for generaiton
-from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2Model
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2LMHeadModel
 # Import torch for datatype attributes
 import torch
 # Import the prompt wrapper...but for llama index
@@ -34,7 +34,7 @@ def get_tokenizer_model():
     tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = GPT2Model.from_pretrained(name)
+    model = GPT2LMHeadModel.from_pretrained(name)
     
     return model, tokenizer
 
