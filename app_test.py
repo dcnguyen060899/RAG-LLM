@@ -51,8 +51,8 @@ update_button = st.button('Request')
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=4096,
-    max_new_tokens=254,
+    context_window=1024,
+    max_new_tokens=100,
     system_prompt="",   # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
@@ -80,7 +80,7 @@ embeddings=LangchainEmbedding(
 
 # Create new service context instance
 service_context = ServiceContext.from_defaults(
-    chunk_size=1024,
+    chunk_size=512,
     llm=llm,
     embed_model=embeddings
 )
@@ -108,7 +108,7 @@ if uploaded_file is not None:
 index = VectorStoreIndex.from_documents(documents)
         
 # Setup index query engine using LLM
-query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
+query_engine = index.as_query_engine()
 
 # Create centered main title
 st.title('👔 HireMind 🧩')
