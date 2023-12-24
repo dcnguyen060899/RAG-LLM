@@ -39,13 +39,13 @@ def get_tokenizer_model():
     return model, tokenizer
 
 model, tokenizer = get_tokenizer_model()
+
 # disclaimer
 st.header('Disclaimer')
 st.write("Due to Streamlit's lack of cloud-GPU support, we're using GPT-2 instead of Llama 2 7B. \
 GPT-2 is smaller and less adept at accurately retrieving information from external data. \
 This site serves as a prototype for deploying Large Language Models (LLMs) and should not be expected to retrieve precise data from external sources.\
 For a more advanced demonstration using Llama 2 7B, please visit our Colab notebook: [LLM Deployment Prototype](https://colab.research.google.com/drive/1bGf9rKntMjH4KtpKs9ryucj1nbiKs_zk?usp=sharing).")
-
 
 
 # Initialize the SimpleInputPrompt with an empty template
