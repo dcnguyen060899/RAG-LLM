@@ -42,7 +42,7 @@ model, tokenizer = get_tokenizer_model()
 
 # disclaimer
 st.title('LLM Deployment Prototype for Production')
-st.caption("Special thanks to my mentor, Medkham Chanthavong, for all the support in making this project a reality.\ Connect with Medkham on LinkedIn: [Medkham Chanthavong](https://www.linkedin.com/in/medkham-chanthavong-4524b0125/).")
+st.caption("Special thanks to my mentor, Medkham Chanthavong, for all the support in making this project a reality. Connect with Medkham on LinkedIn: [Medkham Chanthavong](https://www.linkedin.com/in/medkham-chanthavong-4524b0125/).")
 
 st.subheader('Disclaimer')
 st.write("Due to Streamlit's lack of cloud-GPU support and limited memory, we're using GPT-2 instead of Llama 2 7B. GPT-2, \
