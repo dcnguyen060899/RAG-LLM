@@ -41,8 +41,8 @@ def get_tokenizer_model():
 model, tokenizer = get_tokenizer_model()
 
 # disclaimer
-st.header('LLM Deployment for Production Prototype')
-st.title('Disclaimer')
+st.title('LLM Deployment for Production Prototype')
+st.header('Disclaimer')
 st.write("Due to Streamlit's lack of cloud-GPU support, we're using GPT-2 instead of Llama 2 7B. \
 GPT-2 is smaller and less adept at accurately retrieving information from external data. \
 This site serves as a prototype for deploying Large Language Models (LLMs) and should not be expected to retrieve precise data from external sources.\
