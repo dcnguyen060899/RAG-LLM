@@ -42,7 +42,7 @@ model, tokenizer = get_tokenizer_model()
 
 # disclaimer
 st.title('LLM Deployment Prototype for Production')
-st.text("Special thanks to my mentor, Medkham Chanthavong, for all the support in making this project a reality.\
+st.caption("Special thanks to my mentor, Medkham Chanthavong, for all the support in making this project a reality.\
 Connect with Medkham on LinkedIn: [Medkham Chanthavong](https://www.linkedin.com/in/medkham-chanthavong-4524b0125/).")
 
 st.subheader('Disclaimer')
