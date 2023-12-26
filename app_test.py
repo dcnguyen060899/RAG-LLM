@@ -65,7 +65,7 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=2048,
+    context_window=4096,
     max_new_tokens=256,
     model=model,
     tokenizer=tokenizer
@@ -92,7 +92,7 @@ embeddings=LangchainEmbedding(
 
 # Create new service context instance
 service_context = ServiceContext.from_defaults(
-    chunk_size=2048,
+    chunk_size=512,
     llm=llm,
     embed_model=embeddings
 )
