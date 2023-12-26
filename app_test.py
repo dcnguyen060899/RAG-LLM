@@ -98,7 +98,7 @@ service_context = ServiceContext.from_defaults(
 )
 
 # And set the service context
-# set_global_service_context(service_context)
+set_global_service_context(service_context)
 
 
 # Upload PDF and process it
