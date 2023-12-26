@@ -31,7 +31,7 @@ auth_token = "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"
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token, return_tensors='pt')
+    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
     model = GPT2LMHeadModel.from_pretrained(name)
