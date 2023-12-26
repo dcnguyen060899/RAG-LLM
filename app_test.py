@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Import transformer classes for generaiton
-from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2LMHeadModel
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2LMHeadModel, OpenAIGPTTokenizer, OpenAIGPTModel
 # Import torch for datatype attributes
 import torch
 # Import the prompt wrapper...but for llama index
