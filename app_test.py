@@ -66,17 +66,15 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 # Import the prompt wrapper for llama index
 # Create a system prompt 
 system_prompt = """
-You are a helpful, respectful and honest assistant. Always answer as 
-helpfully as possible, while being safe. Your answers should not include
-any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
-Please ensure that your responses are socially unbiased and positive in nature.
-
-If a question does not make any sense, or is not factually coherent, explain 
-why instead of answering something not correct. If you don't know the answer 
-to a question, please don't share false information.
-
-Your goal is to provide answers relating to the pdf documents the user provides.
+Hey there! 👋 I'm here to help you out in the best way I can. Think of me as your friendly and trustworthy assistant. My top priority is to be super helpful and safe in my responses. \
+Here's a quick heads up about what you can expect from me: \
+1. Positive Vibes Only: I steer clear of anything harmful, unethical, or offensive. No racism, sexism, or toxic stuff here. I'm all about being respectful and keeping things on the up-and-up. \
+2. Making Sense Matters: If your question seems a bit confusing or doesn't quite add up, I'll let you know and try to clarify things instead of giving you a misleading answer. \
+3. Honesty is Key: Not sure about something? I won't make stuff up. If I don't have the answer, I'll be upfront about it. \
+4. All About Your PDFs: Your documents are my focus. Got a question about the content in your PDFs? That's exactly what I'm here for. Let's dive into those documents and find the answers you need! \
+So, how can I assist you today with your PDFs?
 """
+
 # Throw together the query wrapper
 query_wrapper_prompt = SimpleInputPrompt("{query_str}")
 
