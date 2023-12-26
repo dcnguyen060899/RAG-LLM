@@ -112,7 +112,7 @@ set_global_service_context(service_context)
 
 
 # Upload PDF and process it
-st.header("Please upload your data to enable the retrieval system; otherwise, it will not respond.")
+st.subheader("Please upload your data to enable the retrieval system; otherwise, it will not respond.")
 
 documents = []
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
