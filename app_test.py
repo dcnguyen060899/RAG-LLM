@@ -22,8 +22,6 @@ import pypdf
 import time
 import os
 import tempfile
-from llama_index.prompts.prompts import SimpleInputPrompt
-
 
 # Define variable to hold llama2 weights namingfiner
 name = "distilgpt2"
