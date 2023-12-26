@@ -65,7 +65,7 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=1024,
+    context_window=2048,
     max_new_tokens=256,
     model=model,
     tokenizer=tokenizer
