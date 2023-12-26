@@ -24,17 +24,17 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "gpt2"
+name = "openai-gpt"
 # Set auth token variable from hugging face
 auth_token = "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"
 
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
+    tokenizer = OpenAIGPTTokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = GPT2LMHeadModel.from_pretrained(name)
+    model = OpenAIGPTModel.from_pretrained(name)
     
     return model, tokenizer
 
