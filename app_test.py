@@ -31,7 +31,7 @@ auth_token = "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"
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
+    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token, return_tensors='pt')
 
     # Create model
     model = GPT2LMHeadModel.from_pretrained(name)
@@ -66,7 +66,7 @@ update_button = st.button('Request')
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
     context_window=1024,
-    max_new_tokens=256,
+    max_new_tokens=128,
     system_prompt="",   # Placeholder if your initial prompt is empty
     query_wrapper_prompt=query_wrapper_prompt,  # Placeholder string
     model=model,
