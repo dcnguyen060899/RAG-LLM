@@ -115,6 +115,7 @@ set_global_service_context(service_context)
 # Upload PDF and process it
 documents = []
 uploaded_file = st.file_uploader("Upload PDF", type="pdf")
+st.caption("Please upload your data to enable the retrieval system; otherwise, it will not respond.")
 
 if uploaded_file is not None:
     # Create a temporary directory
