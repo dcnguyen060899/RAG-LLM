@@ -81,9 +81,6 @@ Your goal is to provide answers relating to the document the user provide.
 # Throw together the query wrapper
 query_wrapper_prompt = SimpleInputPrompt("{query_str}")
 
-# Complete the query prompt
-query_wrapper_prompt.format(query_str='hello')
-
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
     context_window=1024,
