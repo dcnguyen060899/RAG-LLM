@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Import transformer classes for generaiton
-from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2LMHeadModel, OpenAIGPTTokenizer, OpenAIGPTModel
+from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, GPT2Tokenizer, GPT2LMHeadModel, GPT2Model
 # Import torch for datatype attributes
 import torch
 # Import the prompt wrapper...but for llama index
@@ -24,17 +24,17 @@ import os
 import tempfile
 
 # Define variable to hold llama2 weights namingfiner
-name = "openai-gpt"
+name = "distilgpt2"
 # Set auth token variable from hugging face
 auth_token = "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"
 
 @st.cache_resource
 def get_tokenizer_model():
     # Create tokenizer
-    tokenizer = OpenAIGPTTokenizer.from_pretrained(name, use_auth_token=auth_token)
+    tokenizer = GPT2Tokenizer.from_pretrained(name, use_auth_token=auth_token)
 
     # Create model
-    model = OpenAIGPTModel.from_pretrained(name)
+    model = GPT2Model.from_pretrained(name)
     
     return model, tokenizer
 
