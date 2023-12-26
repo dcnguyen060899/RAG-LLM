@@ -102,7 +102,7 @@ embeddings=LangchainEmbedding(
 
 # Create new service context instance
 service_context = ServiceContext.from_defaults(
-    chunk_size=64,
+    chunk_size=128,
     llm=llm,
     embed_model=embeddings
 )
