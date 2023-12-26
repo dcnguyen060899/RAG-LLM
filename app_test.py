@@ -51,6 +51,8 @@ and may not retrieve precise data from external sources. Additionally, the site 
 In case of a crash, please feel free shoot me a message at my [LinkedIn profile](https://www.linkedin.com/in/duwe-ng/) so I can reboot the site. \
 For a more advanced model demonstration using Llama 2 7B, check out our Colab notebook: \
 [LLM Deployment Prototype](https://colab.research.google.com/drive/1bGf9rKntMjH4KtpKs9ryucj1nbiKs_zk?usp=sharing).")
+st.title("Please upload your data to enable the retrieval system; otherwise, it will not respond.")
+
 
 
 
