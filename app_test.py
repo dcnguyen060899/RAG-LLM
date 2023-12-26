@@ -76,8 +76,7 @@ If a question does not make any sense, or is not factually coherent, explain
 why instead of answering something not correct. If you don't know the answer 
 to a question, please don't share false information.
 
-Your goal is to provide answers relating to the financial performance of 
-the company.
+Your goal is to provide answers relating to the document the user provide.
 """
 # Throw together the query wrapper
 query_wrapper_prompt = SimpleInputPrompt("{query_str}")
