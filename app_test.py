@@ -138,11 +138,11 @@ st.title('👔 HireMind 🧩')
         
 # setup a session to hold all the old prompt
 if 'messages' not in st.session_state:
-        st.session_state.messages = []
+    st.session_state.messages = []
         
 # print out the history message
 for message in st.session_state.messages:
-        st.chat_message(message['role']).markdown(message['content'])
+    st.chat_message(message['role']).markdown(message['content'])
         
         
 # Create a text input box for the user
