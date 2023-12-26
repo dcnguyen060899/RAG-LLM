@@ -66,7 +66,7 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 
 # Import the prompt wrapper for llama index
 # Create a system prompt 
-system_prompt = """<>
+system_prompt = """
 You are a helpful, respectful and honest assistant. Always answer as 
 helpfully as possible, while being safe. Your answers should not include
 any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
@@ -77,7 +77,7 @@ why instead of answering something not correct. If you don't know the answer
 to a question, please don't share false information.
 
 Your goal is to provide answers relating to the financial performance of 
-the company.<>
+the company.
 """
 # Throw together the query wrapper
 query_wrapper_prompt = SimpleInputPrompt("{query_str}")
