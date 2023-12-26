@@ -53,23 +53,33 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 [LLM Deployment Prototype](https://colab.research.google.com/drive/1bGf9rKntMjH4KtpKs9ryucj1nbiKs_zk?usp=sharing).")
 
 
-# Initialize the SimpleInputPrompt with an empty template
-query_wrapper_prompt = SimpleInputPrompt("{query_str}")
-
-# Streamlit UI to let the user update the system prompt
-# Start with an empty string or a default prompt
-default_prompt = ""
-user_system_prompt = st.text_area("How can I best assist you?", value="", height=100)
-update_button = st.button('Request')
-
-
-# # Import the prompt wrapper for llama index
-# # Create a system prompt 
-# system_prompt = """
-# Your goal is to provide answers relating to the document the user provide.
-# """
-# # Throw together the query wrapper
+# # Initialize the SimpleInputPrompt with an empty template
 # query_wrapper_prompt = SimpleInputPrompt("{query_str}")
+
+# # Streamlit UI to let the user update the system prompt
+# # Start with an empty string or a default prompt
+# default_prompt = ""
+# user_system_prompt = st.text_area("How can I best assist you?", value="", height=100)
+# update_button = st.button('Request')
+
+
+# Import the prompt wrapper for llama index
+# Create a system prompt 
+system_prompt = """
+You are a helpful, respectful and honest assistant. Always answer as 
+helpfully as possible, while being safe. Your answers should not include
+any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
+Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain 
+why instead of answering something not correct. If you don't know the answer 
+to a question, please don't share false information.
+
+Your goal is to provide answers relating to the financial performance of 
+the company.
+"""
+# Throw together the query wrapper
+query_wrapper_prompt = SimpleInputPrompt("{query_str}")
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
@@ -81,16 +91,16 @@ llm = HuggingFaceLLM(
     tokenizer=tokenizer
 )
 
-# Function to update the system prompt and reinitialize the LLM with the new prompt
-def update_system_prompt(new_prompt):
-    global llm
-    llm.system_prompt = new_prompt
+# # Function to update the system prompt and reinitialize the LLM with the new prompt
+# def update_system_prompt(new_prompt):
+#     global llm
+#     llm.system_prompt = new_prompt
 
 
-if update_button:
-    # Update the system prompt and reinitialize the LLM
-    update_system_prompt(user_system_prompt)
-    st.success('Requested')
+# if update_button:
+#     # Update the system prompt and reinitialize the LLM
+#     update_system_prompt(user_system_prompt)
+#     st.success('Requested')
     
 # check if user request save to the memory
 # st.write(llm.system_prompt)
