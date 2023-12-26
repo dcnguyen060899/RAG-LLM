@@ -87,7 +87,7 @@ query_wrapper_prompt.format(query_str='hello')
 
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
-    context_window=4096,
+    context_window=1024,
     max_new_tokens=256,
     system_prompt=system_prompt,
     query_wrapper_prompt=query_wrapper_prompt,
