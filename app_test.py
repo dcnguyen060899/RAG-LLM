@@ -22,6 +22,8 @@ import pypdf
 import time
 import os
 import tempfile
+from llama_index.prompts.prompts import SimpleInputPrompt
+
 
 # Define variable to hold llama2 weights namingfiner
 name = "distilgpt2"
@@ -63,10 +65,34 @@ For a more advanced model demonstration using Llama 2 7B, check out our Colab no
 # user_system_prompt = st.text_area("How can I best assist you?", value="", height=100)
 # update_button = st.button('Request')
 
+
+# Import the prompt wrapper for llama index
+# Create a system prompt 
+system_prompt = """[INST] <>
+You are a helpful, respectful and honest assistant. Always answer as 
+helpfully as possible, while being safe. Your answers should not include
+any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
+Please ensure that your responses are socially unbiased and positive in nature.
+
+If a question does not make any sense, or is not factually coherent, explain 
+why instead of answering something not correct. If you don't know the answer 
+to a question, please don't share false information.
+
+Your goal is to provide answers relating to the financial performance of 
+the company.<>
+"""
+# Throw together the query wrapper
+query_wrapper_prompt = SimpleInputPrompt("{query_str} [/INST]")
+
+# Complete the query prompt
+query_wrapper_prompt.format(query_str='hello')
+
 # Initialize the llm object with a placeholder or default system prompt
 llm = HuggingFaceLLM(
     context_window=4096,
     max_new_tokens=256,
+    system_prompt=system_prompt,
+    query_wrapper_prompt=query_wrapper_prompt,
     model=model,
     tokenizer=tokenizer
 )
