@@ -139,7 +139,7 @@ if uploaded_file is not None:
 index = VectorStoreIndex.from_documents(documents)
         
 # Setup index query engine using LLM
-query_engine = index.as_query_engine()
+query_engine = index.as_query_engine(streaming=True, similarity_top_k=1)
 
 # Create centered main title
 st.title('👔 HireMind 🧩')
